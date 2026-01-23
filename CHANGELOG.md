@@ -1,3 +1,9 @@
+## 1.0.5
+
+* Fixed critical `EXC_BAD_ACCESS` (Segment Fault) error during model loading.
+* Improved memory safety by using heap allocation for model file streams.
+* Fixed dangling pointer issue in `whisper_init_from_file_no_state`.
+
 ## 1.0.4
 
 * Fixed `Exception: map::at: key not found` error when using K-quantized models (Q2_K, Q3_K, Q4_K, Q5_K, Q6_K).

@@ -2858,15 +2858,16 @@ struct whisper_context * whisper_init_from_file_no_state(const char * path_model
 
     log("%s: loading model from '%s'\n", __func__, path_model);
 
-    auto fin = std::ifstream(path_model, std::ios::binary);
-    if (!fin) {
+    std::ifstream * fin = new std::ifstream(path_model, std::ios::binary);
+    if (!(*fin)) {
         log("%s: failed to open '%s'\n", __func__, path_model);
+        delete fin;
         return nullptr;
     }
 
     whisper_model_loader loader = {};
 
-    loader.context = &fin;
+    loader.context = fin;
 
     loader.read = [](void * ctx, void * output, size_t read_size) {
         std::ifstream * fin = (std::ifstream*)ctx;
@@ -2881,7 +2882,10 @@ struct whisper_context * whisper_init_from_file_no_state(const char * path_model
 
     loader.close = [](void * ctx) {
         std::ifstream * fin = (std::ifstream*)ctx;
-        fin->close();
+        if (fin) {
+            fin->close();
+            delete fin;
+        }
     };
 
     auto ctx = whisper_init_no_state(&loader);
