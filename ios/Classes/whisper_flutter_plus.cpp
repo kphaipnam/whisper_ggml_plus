@@ -211,7 +211,7 @@ extern "C"
                 return jsonToChar(transcribe(jsonBody));
             }
             if (jsonBody["@type"] == "getVersion") {
-                return jsonToChar({{"@type", "version"}, {"message", "lib v1.0.3-accel-sync"}});
+                return jsonToChar({{"@type", "version"}, {"message", "lib v1.0.4-accel-sync"}});
             }
             return jsonToChar({{"@type", "error"}, {"message", "method not found"}});
         } catch (const std::exception &e) {

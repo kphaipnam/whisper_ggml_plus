@@ -1,3 +1,8 @@
+## 1.0.4
+
+* Fixed `Exception: map::at: key not found` error when using K-quantized models (Q2_K, Q3_K, Q4_K, Q5_K, Q6_K).
+* Added missing quantization types to memory requirement maps.
+
 ## 1.0.3
 
 * Refactored native bridge for better thread safety and persistent context management.
