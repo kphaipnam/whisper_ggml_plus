@@ -17,16 +17,15 @@ Whisper.cpp Flutter plugin with Large-v3-Turbo (128-mel) support.
   s.source_files = 'Classes/**/*'
   s.dependency 'FlutterMacOS'
   s.platform = :osx, '10.15'
-  s.xcconfig = {
+  s.pod_target_xcconfig = {
+    'DEFINES_MODULE' => 'YES',
     'MACOSX_DEPLOYMENT_TARGET' => '10.15',
     'OTHER_CFLAGS' => '-DGGML_USE_METAL=1',
     'OTHER_CPLUSPLUSFLAGS' => '-DGGML_USE_METAL=1',
-    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++20',
-    'HEADER_SEARCH_PATHS' => '"$(PODS_TARGET_SRCROOT)/Classes/whisper" "$(PODS_TARGET_SRCROOT)/Classes/whisper/ggml-cpu" "$(PODS_TARGET_SRCROOT)/Classes/whisper/coreml"'
+    'HEADER_SEARCH_PATHS' => '"$(PODS_TARGET_SRCROOT)/Classes/whisper" "$(PODS_TARGET_SRCROOT)/Classes/whisper/ggml-cpu" "$(PODS_TARGET_SRCROOT)/Classes/whisper/coreml"',
+    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
+    'CLANG_CXX_LIBRARY' => 'libc++'
   }
   s.frameworks = 'Metal', 'Foundation'
-  s.pod_target_xcconfig = {
-    'DEFINES_MODULE' => 'YES'
-  }
   s.swift_version = '5.0'
 end
