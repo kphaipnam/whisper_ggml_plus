@@ -1,3 +1,9 @@
+## 1.1.2
+
+* Restored `ggml-cpu` directory hierarchy to match official v1.8.3 structure.
+* Fixed missing header dependencies: `ggml-threading.h`, `quants.h`.
+* Updated build configurations (Podspec, CMake) for subdirectory support.
+
 ## 1.1.1
 
 * Fixed missing header dependencies for whisper.cpp v1.8.3 (traits.h, whisper-compat.h, gguf.h).

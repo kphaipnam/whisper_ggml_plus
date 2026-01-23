@@ -9,11 +9,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fdata-sections -ffunction-sections"
 
 # Include directories
 include_directories(src)
+include_directories(src/ggml-cpu)
 
 # Collect all engine source files
 file(GLOB WHISPER_SRC 
     src/*.cpp 
     src/*.c
+    src/ggml-cpu/*.cpp
+    src/ggml-cpu/*.c
 )
 
 add_library(whisper ${WHISPER_SRC})
