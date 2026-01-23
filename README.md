@@ -2,128 +2,94 @@
 
 # Whisper GGML Plus
 
-_OpenAI Whisper ASR (Automatic Speech Recognition) for Flutter using [Whisper.cpp](https://github.com/ggerganov/whisper.cpp). Supports Large-v3-Turbo (128 mel bands)._
+_High-performance OpenAI Whisper ASR (Automatic Speech Recognition) for Flutter using the latest [Whisper.cpp](https://github.com/ggerganov/whisper.cpp) v1.8.3 engine. Fully optimized for Large-v3-Turbo and hardware acceleration._
 
 <p align="center">
   <a href="https://pub.dev/packages/whisper_ggml_plus">
-     <img src="https://img.shields.io/badge/pub-1.0.0-blue?logo=dart" alt="pub">
+     <img src="https://img.shields.io/badge/pub-1.1.1-blue?logo=dart" alt="pub">
   </a>
 </p>
 </div>
 
+## Key Upgrades in "Plus" Version
+
+- **Major Engine Upgrade**: Synchronized with `whisper.cpp` v1.8.3, featuring the new dynamic `ggml-backend` architecture.
+- **Large-v3-Turbo Support**: Native support for 128 mel bands, allowing you to use the latest Turbo models with high accuracy and speed.
+- **Hardware Acceleration**: Out-of-the-box support for **CoreML (NPU)** and **Metal (GPU)** on iOS and macOS.
+- **Persistent Context**: Models are cached in memory. After the first load, subsequent transcriptions start instantly without re-loading weights.
+- **GGUF Support**: Compatible with the modern GGUF model format for better performance and memory efficiency.
 
 ## Supported platforms
 
-
-| Platform  | Supported |
-|-----------|-----------|
-| Android   | ✅        |
-| iOS       | ✅        |
-| MacOS     | ✅        |
-
+| Platform  | Supported | Acceleration |
+|-----------|-----------|--------------|
+| Android   | ✅        | CPU (SIMD)   |
+| iOS       | ✅        | CoreML/Metal |
+| MacOS     | ✅        | Metal        |
 
 ## Features
 
-
-
-- Automatic Speech Recognition integration for Flutter apps.
-
-- Supports automatic model downloading and initialization. Can be configured to work fully offline by using `assets` models (see example folder).
-
-- Seamless iOS and Android support with optimized performance.
-
-- Can be configured to use specific language ("en", "fr", "de", etc) or auto-detect ("auto").
-
-- Utilizes [CORE ML](https://github.com/ggml-org/whisper.cpp/tree/master?tab=readme-ov-file#core-ml-support) for enhanced processing on iOS devices.
-
-- **Support for Large-v3-Turbo models (128 mel bands).**
-
-
+- **Automatic Speech Recognition**: Seamless integration for Flutter apps.
+- **Offline Capability**: Can be configured to work fully offline by using models from local assets.
+- **Multilingual**: Auto-detect language or specify codes like "en", "ko", "ja", etc.
+- **VAD (Voice Activity Detection)**: Utilizes built-in VAD for cleaner and faster processing.
+- **Flash Attention**: Enabled for better performance on supported hardware.
 
 ## Installation
 
-
-
-To use this library in your Flutter project, follow these steps:
-
-
-
-1. Add the library to your Flutter project's `pubspec.yaml`:
+Add the library to your Flutter project's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  whisper_ggml_plus: ^1.0.0
+  whisper_ggml_plus: ^1.1.1
 ```
 
-2. Run `flutter pub get` to install the package.
-
-
+Run `flutter pub get` to install the package.
 
 ## Usage
 
-
-
-To integrate Whisper ASR in your Flutter app:
-
-
-
-1. Import the package:
-
+### 1. Import the package
 ```dart
 import 'package:whisper_ggml_plus/whisper_ggml_plus.dart';
 ```
 
-2. Run `flutter pub get` to install the package.
-
-
-
-## Usage
-
-
-
-To integrate Whisper ASR in your Flutter app:
-
-
-
-1. Import the package:
+### 2. Pick your model
+For best performance on mobile, `tiny`, `base`, or `small` are recommended. For high accuracy, use `largeV3` (Turbo).
 
 ```dart
-import 'package:whisper_ggml_plus/whisper_ggml_plus.dart';
+final model = WhisperModel.largeV3; // Supports Large-v3 and Turbo (128 mel)
 ```
 
-
-
-2. Pick your model. Smaller models are more performant, but the accuracy may be lower. Recommended models are `tiny` and `small`.
-
-```dart
-final model = WhisperModel.tiny;
-```
-
-3. Declare `WhisperController` and use it for transcription:
+### 3. Transcribe Audio
+Declare `WhisperController` and use it for transcription. Note that .wav files must be **16kHz mono**.
 
 ```dart
 final controller = WhisperController();
 
 final result = await controller.transcribe(
-    model: model, /// Selected WhisperModel
-    audioPath: audioPath, /// Path to .wav file
-    lang: 'en', /// Language to transcribe
+    model: model,
+    audioPath: audioPath, // Path to 16kHz mono .wav file
+    lang: 'auto', // 'en', 'ko', 'ja', or 'auto' for detection
 );
 ```
 
-4. Use the `result` variable to access the transcription result:
-
+### 4. Handle Result
 ```dart
-if (result?.transcription.text != null) {
-    /// Do something with the transcription
-    print(result!.transcription.text);
+if (result != null) {
+    print("Transcription: ${result.transcription.text}");
+    
+    for (var segment in result.transcription.segments) {
+        print("[${segment.fromTs} -> ${segment.toTs}] ${segment.text}");
+    }
 }
 ```
 
+## Optimization Tips
 
+- **Release Mode**: Always test performance in `--release` mode. Native optimizations (SIMD/Metal) are significantly more effective.
+- **Model Quantization**: Use quantized models (e.g., `q4_0`, `q5_0`, or `q2_k`) to reduce RAM usage, especially when using Large-v3-Turbo on mobile devices.
+- **CoreML on iOS**: Ensure you provide the `.mlmodelc` folder alongside your `.bin` file for maximum NPU acceleration.
 
-## Notes
+## License
 
-
-
-Transcription processing time is about `5x` times faster when running in release mode.
+MIT License - Based on the original work by sk3llo/whisper_ggml.

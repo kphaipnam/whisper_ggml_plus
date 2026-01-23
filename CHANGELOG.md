@@ -1,3 +1,8 @@
+## 1.1.1
+
+* Fixed missing header dependencies for whisper.cpp v1.8.3 (traits.h, whisper-compat.h, gguf.h).
+* Improved Android directory structure for better compatibility.
+
 ## 1.1.0
 
 * Major upgrade: Synchronized engine with official whisper.cpp v1.8.3.
