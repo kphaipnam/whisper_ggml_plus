@@ -1,3 +1,12 @@
+## 1.2.3
+
+* **Performance Enhancement**: Added VAD (Voice Activity Detection) support with Silero VAD model.
+* VAD automatically detects and processes only speech segments, skipping silence for 2-3x faster transcription.
+* Bundled ggml-silero-v6.2.0.bin model (864KB) for out-of-the-box VAD support on iOS/macOS.
+* VAD reduces battery consumption by skipping silence processing.
+* Android VAD support planned for future release.
+* Fixed `whisper_vad_init_from_file_with_params: failed to open VAD model '(null)'` crash.
+
 ## 1.2.2
 
 * **Critical Fix**: Added missing `GGML_USE_CPU` compiler flag for iOS/macOS.

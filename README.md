@@ -6,7 +6,7 @@ _High-performance OpenAI Whisper ASR (Automatic Speech Recognition) for Flutter 
 
 <p align="center">
   <a href="https://pub.dev/packages/whisper_ggml_plus">
-     <img src="https://img.shields.io/badge/pub-1.2.2-blue?logo=dart" alt="pub">
+     <img src="https://img.shields.io/badge/pub-1.2.3-blue?logo=dart" alt="pub">
   </a>
 </p>
 </div>
@@ -21,18 +21,18 @@ _High-performance OpenAI Whisper ASR (Automatic Speech Recognition) for Flutter 
 
 ## Supported platforms
 
-| Platform  | Supported | Acceleration |
-|-----------|-----------|--------------|
-| Android   | ✅        | CPU (SIMD)   |
-| iOS       | ✅        | CoreML/Metal |
-| MacOS     | ✅        | Metal        |
+| Platform  | Supported | Acceleration | VAD |
+|-----------|-----------|--------------|-----|
+| Android   | ✅        | CPU (SIMD)   | ❌  |
+| iOS       | ✅        | CoreML/Metal | ✅  |
+| MacOS     | ✅        | Metal        | ✅  |
 
 ## Features
 
 - **Automatic Speech Recognition**: Seamless integration for Flutter apps.
 - **Offline Capability**: Can be configured to work fully offline by using models from local assets.
 - **Multilingual**: Auto-detect language or specify codes like "en", "ko", "ja", etc.
-- **VAD (Voice Activity Detection)**: Utilizes built-in VAD for cleaner and faster processing.
+- **VAD (Voice Activity Detection)**: Automatic silence skipping for 2-3x faster transcription on iOS/macOS.
 - **Flash Attention**: Enabled for better performance on supported hardware.
 
 ## Installation
@@ -41,7 +41,7 @@ Add the library to your Flutter project's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  whisper_ggml_plus: ^1.2.2
+  whisper_ggml_plus: ^1.2.3
 ```
 
 Run `flutter pub get` to install the package.

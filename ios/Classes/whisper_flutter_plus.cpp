@@ -14,6 +14,8 @@
 #include "json/json.hpp"
 #include <stdio.h>
 
+extern "C" const char* get_vad_model_path();
+
 using json = nlohmann::json;
 
 struct whisper_params
@@ -144,7 +146,14 @@ json transcribe(json jsonBody)
     wparams.language = params.language.c_str();
     wparams.n_threads = params.n_threads;
     wparams.split_on_word = params.split_on_word;
-    wparams.vad = true;
+    
+    const char* vadPath = get_vad_model_path();
+    if (vadPath != nullptr) {
+        wparams.vad = true;
+        wparams.vad_model_path = vadPath;
+    } else {
+        wparams.vad = false;
+    }
 
     if (params.split_on_word) {
         wparams.max_len = 1;

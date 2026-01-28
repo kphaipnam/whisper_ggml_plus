@@ -144,7 +144,7 @@ json transcribe(json jsonBody)
     wparams.language = params.language.c_str();
     wparams.n_threads = params.n_threads;
     wparams.split_on_word = params.split_on_word;
-    wparams.vad = true;
+    wparams.vad = false;  // VAD disabled (no external VAD model provided)
 
     if (params.split_on_word) {
         wparams.max_len = 1;
