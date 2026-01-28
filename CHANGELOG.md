@@ -1,4 +1,4 @@
-## 1.2.4
+## 1.2.5
 
 * **Segmentation Fix for Large-v3-Turbo**: Fixed issue where Large-v3-Turbo produces single segment instead of multiple timestamps.
 * **Root Cause**: Large-v3-Turbo doesn't generate timestamp tokens naturally in greedy sampling mode, causing all text to be treated as one segment.

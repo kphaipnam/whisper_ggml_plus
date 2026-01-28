@@ -1,4 +1,4 @@
-# Fix for Large-v3-Turbo Single Segment Issue (Updated)
+# Fix for Large-v3-Turbo Single Segment Issue (v1.2.5)
 
 ## Problem
 
@@ -65,7 +65,7 @@ Large-v3-Turbo characteristics:
 
 So this check doesn't affect Large-v3-Turbo, but we still set `single_segment=false` as a safety measure.
 
-## Solution Applied (v1.2.4)
+## Solution Applied (v1.2.5)
 
 ### 1. Auto-Detect Large-v3-Turbo and Force Segmentation
 
@@ -209,19 +209,19 @@ When `max_len` is set:
 
 ## Version Changes
 
-- **pubspec.yaml**: 1.2.3 → 1.2.4
-- **ios/whisper_ggml_plus.podspec**: 1.2.3 → 1.2.4
-- **macos/whisper_ggml_plus.podspec**: 1.2.3 → 1.2.4
-- **CHANGELOG.md**: Updated v1.2.4 entry with accurate root cause
+- **pubspec.yaml**: 1.2.3 → 1.2.5
+- **ios/whisper_ggml_plus.podspec**: 1.2.3 → 1.2.5
+- **macos/whisper_ggml_plus.podspec**: 1.2.3 → 1.2.5
+- **CHANGELOG.md**: Updated v1.2.5 entry with accurate root cause
 
 ## Files Modified
 
 1. `ios/Classes/whisper_flutter_plus.cpp` - Turbo detection + forced segmentation
 2. `macos/Classes/whisper_ggml.cpp` - Turbo detection + forced segmentation
 3. `android/src/whisper/main.cpp` - Turbo detection + forced segmentation
-4. `pubspec.yaml` - Version 1.2.4
-5. `ios/whisper_ggml_plus.podspec` - Version 1.2.4
-6. `macos/whisper_ggml_plus.podspec` - Version 1.2.4
+4. `pubspec.yaml` - Version 1.2.5
+5. `ios/whisper_ggml_plus.podspec` - Version 1.2.5
+6. `macos/whisper_ggml_plus.podspec` - Version 1.2.5
 7. `CHANGELOG.md` - Updated release notes with accurate explanation
 8. `FIX_LARGE_V3_TURBO_SEGMENTATION.md` - Complete technical analysis (this file)
 
