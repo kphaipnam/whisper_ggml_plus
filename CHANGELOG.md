@@ -1,3 +1,10 @@
+## 1.2.2
+
+* **Critical Fix**: Added missing `GGML_USE_CPU` compiler flag for iOS/macOS.
+* Fixed `GGML_ASSERT(device) failed` crash when CPU backend was not registered.
+* CPU backend is now properly initialized alongside Metal backend on iOS/macOS.
+* Resolves issue where `ggml_backend_dev_by_type(GGML_BACKEND_DEVICE_TYPE_CPU)` returned NULL.
+
 ## 1.2.1
 
 * **Critical Fix**: Added Metal shader compilation for iOS/macOS.
