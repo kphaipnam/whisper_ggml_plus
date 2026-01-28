@@ -1,11 +1,19 @@
+## 1.2.6
+
+* **Segmentation Fix for Large-v3-Turbo (Beam Search Solution)**: Fixed issue where Large-v3-Turbo produces single segment instead of multiple timestamps.
+* **Root Cause**: Large-v3-Turbo (4 decoder layers, distilled) doesn't generate timestamp tokens naturally in greedy sampling mode due to weak timestamp prediction, causing all text to be treated as one segment.
+* **Solution**: Automatically enable beam search sampling (`beam_size=3`) for Large-v3-Turbo models instead of greedy sampling. Beam search explores multiple token candidates simultaneously, increasing probability of selecting timestamp tokens for natural segmentation.
+* **Why Beam Search Works**: Proven by whisper-cli (beam_size=5) producing perfect multi-segment results on macOS. Our beam_size=3 balances speed vs quality trade-off.
+* **Performance Impact**: ~2-3x slower than greedy sampling, but produces proper segmentation matching other Whisper models (base, large-v3).
+* Added Turbo model auto-detection (`n_text_layer=4`, `n_vocab=51866`) with automatic beam search strategy selection.
+* Removed `max_len=50` forced segmentation approach (v1.2.5) which was ineffective for dense languages like Korean.
+* Added comprehensive debug logging for sampling strategy and beam search parameters.
+
 ## 1.2.5
 
-* **Segmentation Fix for Large-v3-Turbo**: Fixed issue where Large-v3-Turbo produces single segment instead of multiple timestamps.
-* **Root Cause**: Large-v3-Turbo doesn't generate timestamp tokens naturally in greedy sampling mode, causing all text to be treated as one segment.
-* **Solution**: Automatically enable forced segmentation (`max_len=50`) for Large-v3-Turbo models to split text into proper segments.
-* Added Turbo model auto-detection (`n_text_layer=4`, `n_vocab=51866`) with specialized parameter tuning.
-* Explicitly set `single_segment=false` to prevent distilled model detection from forcing single-segment mode.
-* Added comprehensive debug logging for model hyperparameters and transcription parameters.
+* **Segmentation Fix for Large-v3-Turbo (Deprecated)**: Attempted fix using forced segmentation (`max_len=50`).
+* **Issue**: This approach was ineffective for dense languages (Korean, Japanese) where entire segments fit within 50 characters.
+* **Superseded by**: v1.2.6 beam search solution.
 
 ## 1.2.3
 
