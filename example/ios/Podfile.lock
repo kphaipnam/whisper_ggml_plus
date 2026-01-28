@@ -7,10 +7,10 @@ PODS:
   - Flutter (1.0.0)
   - record_ios (1.1.0):
     - Flutter
-  - whisper_ggml_plus (1.2.2):
+  - whisper_ggml_plus (1.2.3):
     - Flutter
-    - whisper_ggml_plus/no-arc (= 1.2.2)
-  - whisper_ggml_plus/no-arc (1.2.2):
+    - whisper_ggml_plus/no-arc (= 1.2.3)
+  - whisper_ggml_plus/no-arc (1.2.3):
     - Flutter
 
 DEPENDENCIES:
@@ -33,7 +33,7 @@ SPEC CHECKSUMS:
   ffmpeg_kit_flutter_new_min: 85493896be79f45e846b5c9b23a3bf73eb284c4a
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   record_ios: f75fa1d57f840012775c0e93a38a7f3ceea1a374
-  whisper_ggml_plus: daf51e18f6015f7775bf87994d8a90c4fdbd2b30
+  whisper_ggml_plus: 4dc475f980ce87fa25bc5e8e4b1efbc8d68b1456
 
 PODFILE CHECKSUM: 72ee454c4ec33a988dcc600fc0a7454db5597cae
 
