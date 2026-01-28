@@ -139,9 +139,12 @@ json transcribe(json jsonBody)
     }
 
     // Debug: Print model hyperparameters to diagnose segmentation issues
-    fprintf(stderr, "[DEBUG] Model info - n_text_layer: %d, n_vocab: %d\n", 
-            whisper_model_n_text_layer(g_ctx), 
-            whisper_model_n_vocab(g_ctx));
+    const int model_n_text_layer = whisper_model_n_text_layer(g_ctx);
+    const int model_n_vocab = whisper_model_n_vocab(g_ctx);
+    const bool is_turbo = (model_n_text_layer == 4 && model_n_vocab == 51866);
+    
+    fprintf(stderr, "[DEBUG] Model info - n_text_layer: %d, n_vocab: %d, is_turbo: %d\n", 
+            model_n_text_layer, model_n_vocab, is_turbo);
 
     whisper_full_params wparams = whisper_full_default_params(WHISPER_SAMPLING_GREEDY);
     wparams.print_realtime = false;
@@ -151,7 +154,7 @@ json transcribe(json jsonBody)
     wparams.language = params.language.c_str();
     wparams.n_threads = params.n_threads;
     wparams.split_on_word = params.split_on_word;
-    wparams.single_segment = false;  // Explicitly prevent single segment output
+    wparams.single_segment = false;
     
     const char* vadPath = get_vad_model_path();
     if (vadPath != nullptr) {
@@ -164,6 +167,11 @@ json transcribe(json jsonBody)
     if (params.split_on_word) {
         wparams.max_len = 1;
         wparams.token_timestamps = true;
+    } else if (is_turbo && !params.no_timestamps) {
+        wparams.max_len = 50;
+        wparams.token_timestamps = true;
+        wparams.split_on_word = true;
+        fprintf(stderr, "[DEBUG] Turbo model detected - enabling forced segmentation (max_len=50)\n");
     }
 
     // Debug: Print critical parameters before transcription

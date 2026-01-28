@@ -1,9 +1,11 @@
 ## 1.2.4
 
-* **Segmentation Fix**: Fixed Large-v3-Turbo producing single segment instead of multiple timestamps.
-* Explicitly set `single_segment = false` to prevent distilled model detection from forcing single-segment mode.
-* Added debug logging to diagnose model hyperparameters (n_text_layer, n_vocab) and transcription parameters.
-* Improved timestamp segmentation behavior for all models, especially Large-v3 and Large-v3-Turbo variants.
+* **Segmentation Fix for Large-v3-Turbo**: Fixed issue where Large-v3-Turbo produces single segment instead of multiple timestamps.
+* **Root Cause**: Large-v3-Turbo doesn't generate timestamp tokens naturally in greedy sampling mode, causing all text to be treated as one segment.
+* **Solution**: Automatically enable forced segmentation (`max_len=50`) for Large-v3-Turbo models to split text into proper segments.
+* Added Turbo model auto-detection (`n_text_layer=4`, `n_vocab=51866`) with specialized parameter tuning.
+* Explicitly set `single_segment=false` to prevent distilled model detection from forcing single-segment mode.
+* Added comprehensive debug logging for model hyperparameters and transcription parameters.
 
 ## 1.2.3
 
