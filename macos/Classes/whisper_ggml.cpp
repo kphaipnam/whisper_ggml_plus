@@ -67,7 +67,9 @@ static std::mutex g_mutex;
 
 char *jsonToChar(json jsonData)
 {
-    std::string result = jsonData.dump();
+    // Ensure ASCII encoding to avoid UTF-8 issues across FFI boundary
+    // Non-ASCII characters (Korean, etc.) will be escaped as \uXXXX
+    std::string result = jsonData.dump(-1, ' ', true, nlohmann::json::error_handler_t::strict);
     char *ch = new char[result.size() + 1];
     strcpy(ch, result.c_str());
     return ch;

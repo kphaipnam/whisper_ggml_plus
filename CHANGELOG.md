@@ -1,3 +1,11 @@
+## 1.2.9
+
+* **UTF-8 Encoding Fix**: Fixed JSON parsing error with non-ASCII characters (Korean, Chinese, Japanese, etc.) in transcription results.
+* **Root Cause**: `nlohmann::json::dump()` was outputting raw UTF-8 bytes, which caused issues when passing through FFI boundary to Dart. Error: `[json.exception.type_error.316] invalid UTF-8 byte at index N`.
+* **Solution**: Added `ensure_ascii` flag to JSON serialization - non-ASCII characters are now escaped as `\uXXXX` Unicode escape sequences.
+* **Impact**: Transcriptions with Korean/CJK characters now parse correctly without UTF-8 decoding errors.
+* Applied fix to iOS, macOS, and Android platforms.
+
 ## 1.2.8
 
 * **Enhanced CoreML Debugging**: Added comprehensive debug logging to diagnose CoreML loading failures.
