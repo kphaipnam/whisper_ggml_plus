@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'whisper_ggml_plus'
-  s.version          = '1.0.0'
+  s.version          = '1.2.1'
   s.summary          = 'Whisper.cpp Flutter plugin with Large-v3-Turbo support.'
   s.description      = <<-DESC
 Whisper.cpp Flutter plugin with Large-v3-Turbo (128-mel) support.
@@ -28,4 +28,34 @@ Whisper.cpp Flutter plugin with Large-v3-Turbo (128-mel) support.
   }
   s.frameworks = 'Metal', 'Foundation'
   s.swift_version = '5.0'
+
+  # Compile Metal shaders to default.metallib during pod install
+  s.script_phases = [
+    {
+      :name => 'Compile Metal Shaders',
+      :input_files => ["${PODS_TARGET_SRCROOT}/Classes/whisper/ggml/src/ggml-metal/*.metal"],
+      :output_files => ["${METAL_LIBRARY_OUTPUT_DIR}/default.metallib"],
+      :execution_position => :after_compile,
+      :script => <<-SCRIPT
+        set -e
+        set -u
+        set -o pipefail
+        
+        echo "🔨 Compiling Metal shaders for whisper_ggml_plus macOS..."
+        
+        cd "${PODS_TARGET_SRCROOT}/Classes/whisper"
+        
+        # Compile Metal shaders to Air Intermediate Representation, then to Metal Library
+        xcrun metal \
+          -I"${PODS_TARGET_SRCROOT}/Classes/whisper/ggml/src" \
+          -target "air64-${LLVM_TARGET_TRIPLE_VENDOR}-${LLVM_TARGET_TRIPLE_OS_VERSION}${LLVM_TARGET_TRIPLE_SUFFIX:-}" \
+          -ffast-math \
+          -std=macos-metal2.3 \
+          -o "${METAL_LIBRARY_OUTPUT_DIR}/default.metallib" \
+          ggml/src/ggml-metal/*.metal
+        
+        echo "✅ Metal library compiled successfully: ${METAL_LIBRARY_OUTPUT_DIR}/default.metallib"
+      SCRIPT
+    }
+  ]
 end

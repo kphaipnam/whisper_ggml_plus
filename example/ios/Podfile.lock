@@ -33,7 +33,7 @@ SPEC CHECKSUMS:
   ffmpeg_kit_flutter_new_min: 85493896be79f45e846b5c9b23a3bf73eb284c4a
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   record_ios: f75fa1d57f840012775c0e93a38a7f3ceea1a374
-  whisper_ggml_plus: e00c2af9a4302fa9f07a6acb9bc802f5209cc308
+  whisper_ggml_plus: c675ab12dd1dc28964783cb3860d4b95f4bd6114
 
 PODFILE CHECKSUM: 72ee454c4ec33a988dcc600fc0a7454db5597cae
 

@@ -1,3 +1,12 @@
+## 1.2.1
+
+* **Critical Fix**: Added Metal shader compilation for iOS/macOS.
+* Implemented automatic Metal library compilation via CocoaPods script phases.
+* Fixed `GGML_ASSERT(device) failed` crash on iOS devices due to missing Metal shaders.
+* Pre-compiles `ggml-metal.metal` to `default.metallib` for faster startup and better performance.
+* Reduces app bundle size (~100KB vs ~416KB source file).
+* Requires Xcode Metal Toolchain (one-time install via `xcodebuild -downloadComponent MetalToolchain`).
+
 ## 1.2.0
 
 * Refactored codebase to version 1.2.0 for improved structure and compatibility.
