@@ -1,3 +1,8 @@
+## 1.2.17
+
+* **Native Build Fix (Final)**: Resolved remaining compilation errors in debug logs by switching from `wparams.speed_up` to `params.speed_up`.
+* **Platform Coverage**: Applied the fix across iOS, Android, and macOS native implementations.
+
 ## 1.2.16
 
 * **Native Build Fix**: Resolved `No member named 'speed_up'` error by aligning with the latest `whisper.cpp` v1.8.3 engine parameters.

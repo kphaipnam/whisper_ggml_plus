@@ -202,7 +202,7 @@ json transcribe(json jsonBody)
     wparams.abort_callback_user_data = nullptr;
 
     fprintf(stderr, "[DEBUG] Transcription params - threads: %d, speed_up: %d, no_timestamps: %d, single_segment: %d, split_on_word: %d, max_len: %d\n",
-            wparams.n_threads, wparams.speed_up, wparams.no_timestamps, wparams.single_segment, wparams.split_on_word, wparams.max_len);
+            wparams.n_threads, params.speed_up, wparams.no_timestamps, wparams.single_segment, wparams.split_on_word, wparams.max_len);
 
     if (whisper_full(g_ctx, wparams, pcmf32.data(), pcmf32.size()) != 0)
     {
