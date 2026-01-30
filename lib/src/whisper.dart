@@ -6,7 +6,6 @@ import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
 import 'package:universal_io/io.dart';
 import 'package:whisper_ggml_plus/src/models/whisper_model.dart';
-import 'package:whisper_ggml_plus/src/whisper_audio_convert.dart';
 
 import 'models/requests/abort_request.dart';
 import 'models/requests/transcribe_request.dart';
