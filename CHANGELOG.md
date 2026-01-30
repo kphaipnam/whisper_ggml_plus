@@ -1,3 +1,20 @@
+## 1.2.15
+
+* **Dependency Updates**: Updated all package dependencies to their latest compatible versions.
+    * `ffi` to `^2.1.5`
+    * `ffmpeg_kit_flutter_new_min` to `^3.1.0`
+    * `freezed_annotation` to `^3.1.0`
+    * `json_annotation` to `^4.10.0`
+    * `universal_io` to `^2.3.1`
+    * `flutter_riverpod` updated to support up to `^3.2.0` (via range constraint `'>=2.6.1 <4.0.0'`).
+* **Dev Dependencies**: Updated `ffigen`, `json_serializable`, and `very_good_analysis` to their latest versions.
+
+## 1.2.14
+
+* **Multi-Platform Parameter Sync**: Fixed `speedUp` and `threads` parameters not being correctly passed to native engines on Android and macOS.
+* **Enhanced Native Logging**: Added detailed parameter status (threads, speed_up) to native debug logs across all platforms.
+* **Bug Fix**: Ensured all performance optimization options are consistently applied at the C++ engine level.
+
 ## 1.2.13
 
 * **Performance Optimization Options**:

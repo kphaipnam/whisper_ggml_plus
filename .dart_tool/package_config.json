@@ -129,13 +129,13 @@
     },
     {
       "name": "ffigen",
-      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/ffigen-18.1.0",
+      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/ffigen-20.1.1",
       "packageUri": "lib/",
-      "languageVersion": "3.4"
+      "languageVersion": "3.8"
     },
     {
       "name": "ffmpeg_kit_flutter_new_min",
-      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_new_min-2.1.0",
+      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_new_min-3.1.0",
       "packageUri": "lib/",
       "languageVersion": "3.1"
     },
@@ -200,6 +200,12 @@
       "languageVersion": "3.9"
     },
     {
+      "name": "http",
+      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/http-1.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
       "name": "http_multi_server",
       "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/http_multi_server-3.2.2",
       "packageUri": "lib/",
@@ -219,13 +225,19 @@
     },
     {
       "name": "json_annotation",
-      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/json_annotation-4.9.0",
+      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/json_annotation-4.10.0",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "json_schema",
+      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/json_schema-5.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "json_serializable",
-      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/json_serializable-6.11.4",
+      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/json_serializable-6.12.0",
       "packageUri": "lib/",
       "languageVersion": "3.9"
     },
@@ -356,6 +368,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "rfc_6901",
+      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/rfc_6901-0.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "riverpod",
       "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/riverpod-2.6.1",
       "packageUri": "lib/",
@@ -452,6 +470,12 @@
       "languageVersion": "3.6"
     },
     {
+      "name": "uri",
+      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/uri-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "vector_math",
       "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/vector_math-2.2.0",
       "packageUri": "lib/",
@@ -459,9 +483,9 @@
     },
     {
       "name": "very_good_analysis",
-      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/very_good_analysis-7.0.0",
+      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/very_good_analysis-10.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.5"
+      "languageVersion": "3.9"
     },
     {
       "name": "watcher",
