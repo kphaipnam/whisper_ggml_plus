@@ -6,7 +6,7 @@ _High-performance OpenAI Whisper ASR (Automatic Speech Recognition) for Flutter 
 
 <p align="center">
   <a href="https://pub.dev/packages/whisper_ggml_plus">
-     <img src="https://img.shields.io/badge/pub-1.2.15-blue?logo=dart" alt="pub">
+     <img src="https://img.shields.io/badge/pub-1.2.16-blue?logo=dart" alt="pub">
   </a>
 </p>
 </div>

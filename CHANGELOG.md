@@ -1,3 +1,9 @@
+## 1.2.16
+
+* **Native Build Fix**: Resolved `No member named 'speed_up'` error by aligning with the latest `whisper.cpp` v1.8.3 engine parameters.
+* **Performance**: Replaced deprecated `speed_up` flag with `audio_ctx` optimization for improved inference speed when `speedUp` is enabled in Dart.
+* **Stability**: Ensured cross-platform consistency for all native engine configurations (iOS, Android, macOS).
+
 ## 1.2.15
 
 * **Dependency Updates**: Updated all package dependencies to their latest compatible versions.
