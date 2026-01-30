@@ -1,3 +1,12 @@
+## 1.2.18
+
+* **Native Logging Overhaul**:
+    * Moved transcription time measurement to the C++ native layer for more accurate and immediate logging.
+    * Added `fflush(stderr)` to ensure debug logs appear instantly in the Flutter console even when the main thread is busy.
+    * Added precise AI inference time tracking using `std::chrono`.
+* **Flutter Controller Refinement**:
+    * Cleaned up redundant logging in Dart and synchronized output with native events.
+
 ## 1.2.17
 
 * **Native Build Fix (Final)**: Resolved remaining compilation errors in debug logs by switching from `wparams.speed_up` to `params.speed_up`.

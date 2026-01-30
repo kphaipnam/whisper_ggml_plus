@@ -11,6 +11,7 @@
 #include <vector>
 #include <mutex>
 #include <iostream>
+#include <chrono>
 #include "json/json.hpp"
 #include <stdio.h>
 
@@ -203,6 +204,9 @@ json transcribe(json jsonBody)
 
     fprintf(stderr, "[DEBUG] Transcription params - threads: %d, speed_up: %d, no_timestamps: %d, single_segment: %d, split_on_word: %d, max_len: %d\n",
             wparams.n_threads, params.speed_up, wparams.no_timestamps, wparams.single_segment, wparams.split_on_word, wparams.max_len);
+    fflush(stderr);
+
+    auto start_time = std::chrono::high_resolution_clock::now();
 
     if (whisper_full(g_ctx, wparams, pcmf32.data(), pcmf32.size()) != 0)
     {
@@ -216,6 +220,12 @@ json transcribe(json jsonBody)
         jsonResult["message"] = "failed to process audio";
         return jsonResult;
     }
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+
+    fprintf(stderr, "[DEBUG] Transcription completed in %lldms\n", (int)duration);
+    fflush(stderr);
 
     const int n_segments = whisper_full_n_segments(g_ctx);
     std::vector<json> segmentsJson = {};
