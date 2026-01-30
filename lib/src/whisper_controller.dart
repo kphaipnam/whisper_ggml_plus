@@ -22,12 +22,14 @@ class WhisperController {
     bool diarize = false,
     bool withTimestamps = true,
     bool convert = true,
+    int threads = 6,
+    bool isTranslate = false,
+    bool speedUp = false,
   }) async {
     await initModel(model);
 
     final Whisper whisper = Whisper(model: model);
     final DateTime start = DateTime.now();
-    const bool translate = false;
     const bool splitWords = false;
 
     try {
@@ -50,11 +52,13 @@ class WhisperController {
         transcribeRequest: TranscribeRequest(
           audio: finalAudioPath,
           language: lang,
-          isTranslate: translate,
+          isTranslate: isTranslate,
+          threads: threads,
           isNoTimestamps: !withTimestamps,
           splitOnWord: splitWords,
           isRealtime: true,
           diarize: diarize,
+          speedUp: speedUp,
         ),
         modelPath: _modelPath,
       );
