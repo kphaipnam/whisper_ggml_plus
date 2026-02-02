@@ -1,8 +1,4 @@
-## 1.3.1
 
-* **Cleanup**: Removed unused imports and legacy conversion logic in `WhisperController`.
-* **Stability**: Refined internal audio conversion routing for better error handling.
-* **Documentation**: Fully restored and updated CoreML acceleration guides in README.
 
 ## 1.3.1
 

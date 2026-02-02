@@ -134,18 +134,6 @@
       "languageVersion": "3.8"
     },
     {
-      "name": "ffmpeg_kit_flutter_new_min",
-      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_new_min-3.1.0",
-      "packageUri": "lib/",
-      "languageVersion": "3.1"
-    },
-    {
-      "name": "ffmpeg_kit_flutter_platform_interface",
-      "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_platform_interface-0.2.1",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "file",
       "rootUri": "file:///Users/jaeseok-song/.pub-cache/hosted/pub.dev/file-7.0.1",
       "packageUri": "lib/",
