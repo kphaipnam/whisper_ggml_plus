@@ -6,40 +6,65 @@ _High-performance OpenAI Whisper ASR (Automatic Speech Recognition) for Flutter 
 
 <p align="center">
   <a href="https://pub.dev/packages/whisper_ggml_plus">
-     <img src="https://img.shields.io/badge/pub-1.2.18-blue?logo=dart" alt="pub">
+     <img src="https://img.shields.io/badge/pub-1.3.0-blue?logo=dart" alt="pub">
   </a>
 </p>
 </div>
 
-## Key Upgrades in "Plus" Version
+## ✨ Key Upgrades in "Plus" Version
 
 - **Major Engine Upgrade**: Synchronized with `whisper.cpp` v1.8.3, featuring the new dynamic `ggml-backend` architecture.
-- **Large-v3-Turbo Support**: Native support for 128 mel bands, allowing you to use the latest Turbo models with high accuracy and speed.
+- **Large-v3-Turbo Support**: Native support for 128 mel bands for high accuracy and speed.
 - **Hardware Acceleration**: Out-of-the-box support for **CoreML (NPU)** and **Metal (GPU)** on iOS and macOS.
-- **Persistent Context**: Models are cached in memory. After the first load, subsequent transcriptions start instantly without re-loading weights.
-- **GGUF Support**: Compatible with the modern GGUF model format for better performance and memory efficiency.
-- **GitHub Release Automation**: Automated release notes generation from `CHANGELOG.md`.
+- **FFmpeg Decoupling (v1.3.0+)**: No more library conflicts! The core engine is now FFmpeg-free. Use `whisper_ggml_plus_ffmpeg` for automatic conversion.
+- **Persistent Context**: Models are cached in memory for instant subsequent transcriptions.
 
-## Supported platforms
-...
+## 🚀 Getting Started
+
+Starting from **v1.3.0**, FFmpeg is no longer bundled with the core engine to prevent version conflicts.
+
+### For 16kHz Mono WAV files:
+If your audio is already in the correct format, just use the core package.
+
 ```dart
 final controller = WhisperController();
-
 final result = await controller.transcribe(
     model: model,
-    audioPath: audioPath,
-    lang: 'auto', // 'en', 'ko', 'ja', or 'auto' for detection
-    withTimestamps: true, // Set to false to hide timestamps
-    convert: true, // Set to false if audioPath is already 16kHz mono .wav
-    threads: 8, // Customize CPU threads
-    speedUp: true, // 2-3x faster inference (slight accuracy cost)
-    isTranslate: false, // Set to true to translate result to English
+    audioPath: 'audio_16khz_mono.wav',
 );
 ```
 
-Run `flutter pub get` to install the package.
+### For MP3, MP4, and other formats:
+Install the companion package to enable automatic conversion without library conflicts.
 
-## Usage
+1. Add both packages:
+```yaml
+dependencies:
+  whisper_ggml_plus: ^1.3.0
+  whisper_ggml_plus_ffmpeg: ^1.0.0 # Companion package
+```
+
+2. Register the converter once at app startup:
+```dart
+import 'package:whisper_ggml_plus/whisper_ggml_plus.dart';
+import 'package:whisper_ggml_plus_ffmpeg/whisper_ggml_plus_ffmpeg.dart';
+
+void main() {
+  // Register FFmpeg converter once
+  WhisperFFmpegConverter.register();
+  runApp(MyApp());
+}
+```
+
+3. Transcribe any format normally:
+```dart
+final result = await controller.transcribe(
+    model: model,
+    audioPath: 'recording.mp3', // Automatically converted to 16kHz WAV
+);
+```
+
+## 🛠️ Usage
 
 ### 1. Import the package
 ```dart
@@ -47,24 +72,20 @@ import 'package:whisper_ggml_plus/whisper_ggml_plus.dart';
 ```
 
 ### 2. Pick your model
-For best performance on mobile, `tiny`, `base`, or `small` are recommended. For high accuracy, use `largeV3Turbo`.
-
 ```dart
-final model = WhisperModel.largeV3Turbo; // Native support for Turbo (128 mel)
+final model = WhisperModel.largeV3Turbo;
 ```
 
 ### 3. Transcribe Audio
-Declare `WhisperController` and use it for transcription.
-
 ```dart
 final controller = WhisperController();
 
 final result = await controller.transcribe(
     model: model,
     audioPath: audioPath,
-    lang: 'auto', // 'en', 'ko', 'ja', or 'auto' for detection
-    withTimestamps: true, // Set to false to hide timestamps
-    convert: true, // Set to false if audioPath is already 16kHz mono .wav
+    lang: 'auto',
+    withTimestamps: true,
+    threads: 6,
 );
 ```
 
@@ -80,13 +101,13 @@ if (result != null) {
 }
 ```
 
-## Optimization Tips
+## 💡 Optimization Tips
 
 - **Release Mode**: Always test performance in `--release` mode. Native optimizations (SIMD/Metal) are significantly more effective.
 - **Model Quantization**: Use quantized models (e.g., `q4_0`, `q5_0`, or `q2_k`) to reduce RAM usage, especially when using Large-v3-Turbo on mobile devices.
 - **Naming Convention for CoreML**: To ensure CoreML detection works, keep the quantization suffix in the filename using the 5-character format (e.g., `ggml-large-v3-turbo-q5_0.bin`). The engine uses this to correctly locate the `-encoder.mlmodelc` directory.
 
-### CoreML Acceleration (Optional)
+### 🧠 CoreML Acceleration (Optional)
 
 For 3x+ faster transcription on Apple Silicon devices (M1+, A14+), you can optionally add a CoreML encoder:
 
@@ -249,6 +270,6 @@ If you see this log, CoreML (NPU) is active. Otherwise, Metal (GPU) is used.
 - CoreML requires ~1.2GB additional storage per model but provides 3x+ speedup and better battery life
 - Android does not support CoreML - CPU optimization only
 
-## License
+## 📄 License
 
 MIT License - Based on the original work by sk3llo/whisper_ggml.
