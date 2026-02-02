@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_io/io.dart';
 import 'package:whisper_ggml_plus/src/models/whisper_model.dart';
+import 'package:whisper_ggml_plus/src/whisper_audio_convert.dart';
 
 import 'models/whisper_result.dart';
 import 'whisper.dart';
@@ -9,6 +10,16 @@ import 'whisper.dart';
 class WhisperController {
   String _modelPath = '';
   String? _dir;
+
+  /// Global audio converter instance.
+  /// Can be registered by external packages like whisper_ggml_plus_ffmpeg.
+  static WhisperAudioConverter? _audioConverter;
+
+  /// Register a custom audio converter.
+  static void registerAudioConverter(WhisperAudioConverter converter) {
+    _audioConverter = converter;
+    debugPrint('🚀 [WHISPER ENGINE] Audio converter registered');
+  }
 
   Future<void> initModel(WhisperModel model) async {
     _dir ??= await getModelDir();
@@ -35,15 +46,23 @@ class WhisperController {
     try {
       String finalAudioPath = audioPath;
 
-      if (convert) {
-        final WhisperAudioConvert converter = WhisperAudioConvert(
-          audioInput: File(audioPath),
-          audioOutput: File('$audioPath.wav'),
-        );
+      // Automatic conversion logic
+      final bool isWav = audioPath.toLowerCase().endsWith('.wav');
 
-        final File? convertedFile = await converter.convert();
-        if (convertedFile != null) {
-          finalAudioPath = convertedFile.path;
+      if (convert && !isWav) {
+        if (_audioConverter != null) {
+          debugPrint(
+              '⚙️  [WHISPER ENGINE] Converting audio using registered converter...');
+          final File? convertedFile =
+              await _audioConverter!.convert(File(audioPath));
+          if (convertedFile != null) {
+            finalAudioPath = convertedFile.path;
+          } else {
+            debugPrint('⚠️  [WHISPER ENGINE] Audio conversion failed');
+          }
+        } else {
+          debugPrint('⚠️  [WHISPER ENGINE] No audio converter registered. '
+              'Please install whisper_ggml_plus_ffmpeg or provide a 16kHz WAV file.');
         }
       }
 

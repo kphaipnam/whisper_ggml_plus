@@ -1,3 +1,10 @@
+## 1.3.0
+
+* **FFmpeg Decoupling**: Removed `ffmpeg_kit_flutter_new_min` from core dependencies to prevent version conflicts with other FFmpeg-related packages.
+* **Extensible Audio Conversion**: Introduced `WhisperAudioConverter` interface and `WhisperController.registerAudioConverter()` for flexible audio preprocessing.
+* **New Companion Package**: Released `whisper_ggml_plus_ffmpeg` for users who need automatic FFmpeg-based conversion.
+* **Optimization**: Core package is now significantly smaller and more compatible with various app configurations.
+
 ## 1.2.19
 
 * **Build Compatibility**: Fixed `std::filesystem` compilation error on iOS/Apple platforms.
