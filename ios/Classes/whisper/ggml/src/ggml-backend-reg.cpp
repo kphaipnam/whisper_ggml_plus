@@ -3,7 +3,11 @@
 #include "ggml-impl.h"
 #include <algorithm>
 #include <cstring>
+
+#ifndef __APPLE__
 #include <filesystem>
+#endif
+
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -86,6 +90,7 @@
 #    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 
+#ifndef __APPLE__
 namespace fs = std::filesystem;
 
 static std::string path_str(const fs::path & path) {
@@ -103,6 +108,7 @@ static std::string path_str(const fs::path & path) {
     }
     return u8path;
 }
+#endif
 
 #if defined(__clang__)
 #    pragma clang diagnostic pop
@@ -157,11 +163,13 @@ struct dl_handle_deleter {
     }
 };
 
+#ifndef __APPLE__
 static void * dl_load_library(const fs::path & path) {
     dl_handle * handle = dlopen(path.string().c_str(), RTLD_NOW | RTLD_LOCAL);
 
     return handle;
 }
+#endif
 
 static void * dl_get_sym(dl_handle * handle, const char * name) {
     return dlsym(handle, name);
@@ -259,6 +267,7 @@ struct ggml_backend_registry {
         devices.push_back(device);
     }
 
+#ifndef __APPLE__
     ggml_backend_reg_t load_backend(const fs::path & path, bool silent) {
         dl_handle_ptr handle { dl_load_library(path) };
         if (!handle) {
@@ -304,6 +313,7 @@ struct ggml_backend_registry {
 
         return reg;
     }
+#endif
 
     void unload_backend(ggml_backend_reg_t reg, bool silent) {
         auto it = std::find_if(backends.begin(), backends.end(),
@@ -433,32 +443,37 @@ ggml_backend_t ggml_backend_init_best(void) {
 
 // Dynamic loading
 ggml_backend_reg_t ggml_backend_load(const char * path) {
+#ifndef __APPLE__
     return get_reg().load_backend(path, false);
+#else
+    (void)path;
+    return nullptr;
+#endif
 }
 
 void ggml_backend_unload(ggml_backend_reg_t reg) {
     get_reg().unload_backend(reg, true);
 }
 
-static fs::path get_executable_path() {
+static std::string get_executable_path() {
 #if defined(__APPLE__)
     // get executable path
     std::vector<char> path;
-    uint32_t size;
-    while (true) {
-        size = path.size();
-        if (_NSGetExecutablePath(path.data(), &size) == 0) {
-            break;
-        }
+    uint32_t size = 0;
+    _NSGetExecutablePath(nullptr, &size);
+    if (size > 0) {
         path.resize(size);
+        if (_NSGetExecutablePath(path.data(), &size) == 0) {
+            std::string base_path(path.data());
+            // remove executable name
+            auto last_slash = base_path.find_last_of('/');
+            if (last_slash != std::string::npos) {
+                base_path = base_path.substr(0, last_slash);
+            }
+            return base_path + "/";
+        }
     }
-    std::string base_path(path.data(), size);
-    // remove executable name
-    auto last_slash = base_path.find_last_of('/');
-    if (last_slash != std::string::npos) {
-        base_path = base_path.substr(0, last_slash);
-    }
-    return base_path + "/";
+    return "./";
 #elif defined(__linux__) || defined(__FreeBSD__)
     std::string base_path = ".";
     std::vector<char> path(1024);
@@ -503,6 +518,7 @@ static fs::path get_executable_path() {
 #endif
 }
 
+#ifndef __APPLE__
 static fs::path backend_filename_prefix() {
 #ifdef _WIN32
     return fs::u8path("ggml-");
@@ -599,12 +615,14 @@ static ggml_backend_reg_t ggml_backend_load_best(const char * name, bool silent,
 
     return get_reg().load_backend(best_path, silent);
 }
+#endif
 
 void ggml_backend_load_all() {
     ggml_backend_load_all_from_path(nullptr);
 }
 
 void ggml_backend_load_all_from_path(const char * dir_path) {
+#ifndef __APPLE__
 #ifdef NDEBUG
     bool silent = true;
 #else
@@ -629,4 +647,7 @@ void ggml_backend_load_all_from_path(const char * dir_path) {
     if (backend_path) {
         ggml_backend_load(backend_path);
     }
+#else
+    (void)dir_path;
+#endif
 }
