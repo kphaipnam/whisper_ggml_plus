@@ -1,3 +1,15 @@
+## 1.3.1
+
+* **Cleanup**: Removed unused imports and legacy conversion logic in `WhisperController`.
+* **Stability**: Refined internal audio conversion routing for better error handling.
+* **Documentation**: Fully restored and updated CoreML acceleration guides in README.
+
+## 1.3.1
+
+* **Cleanup**: Removed unused imports and legacy conversion logic in `WhisperController`.
+* **Stability**: Refined internal audio conversion routing for better error handling.
+* **Documentation**: Fully restored and updated CoreML acceleration guides in README.
+
 ## 1.3.0
 
 * **FFmpeg Decoupling**: Removed `ffmpeg_kit_flutter_new_min` from core dependencies to prevent version conflicts with other FFmpeg-related packages.
