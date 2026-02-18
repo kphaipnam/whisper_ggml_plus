@@ -7,37 +7,73 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -fdata-sections -ffunction-sections")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fdata-sections -ffunction-sections")
 
-# Include directories
 include_directories(src)
-include_directories(src/ggml-cpu)
-include_directories(src/coreml)
+include_directories(src/include)
+include_directories(src/src)
+include_directories(src/ggml/include)
+include_directories(src/ggml/src)
+include_directories(src/ggml/src/ggml-cpu)
+include_directories(json)
 
-# Collect all engine source files
-file(GLOB WHISPER_SRC 
-    src/*.cpp 
-    src/*.c
-    src/ggml-cpu/*.cpp
-    src/ggml-cpu/*.c
-    src/coreml/*.cpp
-    src/coreml/*.c
-    src/coreml/*.m
-    src/coreml/*.mm
+# Whisper core
+set(WHISPER_CORE_SRC
+    src/src/whisper.cpp
 )
 
-add_library(whisper ${WHISPER_SRC})
+# GGML core
+file(GLOB GGML_CORE_SRC
+    src/ggml/src/*.c
+    src/ggml/src/*.cpp
+)
 
+# GGML-CPU core
+file(GLOB GGML_CPU_SRC
+    src/ggml/src/ggml-cpu/*.c
+    src/ggml/src/ggml-cpu/*.cpp
+)
+
+# GGML-CPU arch-specific (ARM for Android)
+file(GLOB GGML_CPU_ARCH_ARM_SRC
+    src/ggml/src/ggml-cpu/arch/arm/*.c
+    src/ggml/src/ggml-cpu/arch/arm/*.cpp
+)
+
+# x86 arch (for x86 Android emulators)
+file(GLOB GGML_CPU_ARCH_X86_SRC
+    src/ggml/src/ggml-cpu/arch/x86/*.c
+    src/ggml/src/ggml-cpu/arch/x86/*.cpp
+)
+
+# AMX (Intel x86 only)
+file(GLOB GGML_CPU_AMX_SRC
+    src/ggml/src/ggml-cpu/amx/*.cpp
+)
+
+# Combine all sources
+set(ALL_WHISPER_SRC
+    ${WHISPER_CORE_SRC}
+    ${GGML_CORE_SRC}
+    ${GGML_CPU_SRC}
+    ${GGML_CPU_ARCH_ARM_SRC}
+    ${GGML_CPU_ARCH_X86_SRC}
+    ${GGML_CPU_AMX_SRC}
+)
+
+add_library(whisper ${ALL_WHISPER_SRC})
+
+# Architecture-specific compiler flags
 if (${ANDROID_ABI} STREQUAL "arm64-v8a")
     target_compile_options(whisper PRIVATE -march=armv8.2-a+fp16)
 elseif (${ANDROID_ABI} STREQUAL "armeabi-v7a")
     target_compile_options(whisper PRIVATE -mfpu=neon-vfpv4)
 endif ()
 
-# Main bridge library
+
 add_library(whisper_flutter SHARED main.cpp)
-target_link_libraries(whisper_flutter PRIVATE whisper)
+target_link_libraries(whisper_flutter PRIVATE whisper log)
 target_compile_definitions(whisper_flutter PUBLIC DART_SHARED_LIB)
 
 set_target_properties(whisper_flutter PROPERTIES
-  PUBLIC_HEADER src/whisper.h 
-  OUTPUT_NAME "whisper"
+    PUBLIC_HEADER src/include/whisper.h
+    OUTPUT_NAME "whisper"
 )
