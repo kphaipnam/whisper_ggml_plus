@@ -88,10 +88,6 @@ target_compile_options(whisper_flutter PRIVATE
     -include android/log.h
 )
 
-add_library(whisper_flutter SHARED main.cpp)
-target_link_libraries(whisper_flutter PRIVATE whisper log)
-target_compile_definitions(whisper_flutter PUBLIC DART_SHARED_LIB)
-
 # Fix: NDK applies -fvisibility=hidden by default; override for whisper_flutter
 # so that extern "C" request() symbol is actually exported from libwhisper.so
 target_compile_options(whisper_flutter PRIVATE -fvisibility=default)
