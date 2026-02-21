@@ -77,3 +77,14 @@ set_target_properties(whisper_flutter PROPERTIES
     PUBLIC_HEADER src/include/whisper.h
     OUTPUT_NAME "whisper"
 )
+
+# Fix: whisper.cpp uses WHISPER_VERSION without including whisper-version.h
+target_compile_options(whisper PRIVATE
+    -include "${CMAKE_CURRENT_SOURCE_DIR}/src/include/whisper-version.h"
+)
+
+# Fix: main.cpp uses __android_log_print without including android/log.h  
+target_compile_options(whisper_flutter PRIVATE
+    -include android/log.h
+)
+
