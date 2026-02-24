@@ -119,11 +119,17 @@ json transcribe(json jsonBody)
             g_ctx = nullptr;
         }
         
-        whisper_context_params cparams = whisper_context_default_params();
-        cparams.use_gpu = true; 
-        cparams.flash_attn = true;
+   whisper_context_params cparams = whisper_context_default_params();
+   #if defined(__ANDROID__)
+   // Android has no Metal/GPU backend; use CPU only to avoid SIGABRT in whisper_full
+   cparams.use_gpu = false;
+   cparams.flash_attn = false;
+   #else
+   cparams.use_gpu = true;
+   cparams.flash_attn = true;
+   #endif
 
-        g_ctx = whisper_init_from_file_with_params(params.model.c_str(), cparams);
+   g_ctx = whisper_init_from_file_with_params(params.model.c_str(), cparams);
         if (g_ctx != nullptr) {
             g_model_path = params.model;
         }
